@@ -1,0 +1,144 @@
+	var CUSTOM_TOOLTIP_WIDTH = 120; //width of the tool tips
+	var oActiveTip = null; //reference to the active tip
+	var oActiveTipStyle = null; //reference to the active tip style
+	var x; //the current horizontal location of cursor (relative to window)
+	var y; //the current vertical location of the cursor (relative to window)
+	var windowWidth; //the window width
+	var windowHeight;  // Current help position and main window size
+	
+	//wire up the mouse move event
+	document.onmousemove = mousemove;
+	
+	/***************************************************
+	* This actually builds the HTML tip
+	****************************************************/
+	function buildToolTip(toolTipId, toolTipText, toolTipWidth)
+	{
+		if ( toolTipWidth !== undefined ) {
+			CUSTOM_TOOLTIP_WIDTH = toolTipWidth;
+		}
+
+		var customToolTip = '';
+		customToolTip += '<div id="' + toolTipId + '" style="position:absolute; background-color:White; padding:12px; border:1px solid #626262; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius:5px; box-shadow:4px 4px 12px #999; visibility:hidden; z-index:98; top:0px; left:0px; width:' + CUSTOM_TOOLTIP_WIDTH + 'px">';
+		customToolTip += toolTipText;
+		customToolTip += '</div>' + "\n";
+		
+		document.write(customToolTip);
+	}
+	
+	/********************************************
+	* Handles the mouse move event.  We need 
+	* to know where the mouse is on the screen.
+	********************************************/
+	function mousemove(e)
+	{
+		if(e) //NON IE
+		{
+			x = e.pageX ? e.pageX - window.pageXOffset : e.clientX ? e.clientX - window.pageXOffset : 0;
+			y = e.pageY ? e.pageY - window.pageYOffset : e.clientY ? e.clientY - window.pageYOffset : 0;
+		}
+		else if(event) //IE
+		{
+			x = event.clientX;
+			y = event.clientY;
+		}
+		else
+		{
+			x = 0; 
+			y = 0;
+		}
+
+		if(oActiveTipStyle) 
+			showCustomToolTip();
+	}
+	
+	/************************************
+	* Support function for showTip()
+	************************************/
+	function showCustomToolTip()
+	{
+	
+		var heightOfBox = oActiveTip.offsetHeight;
+		var pageY, pageX;
+		
+		// adjust for scrolling
+		if (self.pageYOffset) // all except Explorer
+		{
+			pageY = y + self.pageYOffset;
+			pageX = x + self.pageXOffset;	
+		}
+		else if (document.documentElement && document.documentElement.scrollTop) // Explorer 6 Strict
+		{
+			pageY = y + document.documentElement.scrollTop;
+			pageX = x + document.documentElement.scrollLeft;
+		}
+		else if (document.body) // all other Explorers
+		{
+			pageY = y + document.body.scrollTop;
+			pageX = x + document.body.scrollLeft;
+		}
+		
+		// set left
+		if( (x  + CUSTOM_TOOLTIP_WIDTH + 10) < windowWidth)
+		{
+			oActiveTipStyle.left = (pageX + 12) + "px";
+		}
+		else //tool tip would be off the screen, move it to the left.
+		{
+			oActiveTipStyle.left = (pageX - (CUSTOM_TOOLTIP_WIDTH + 20)) + "px";
+		}
+
+		// set top
+		if( (y + heightOfBox) < windowHeight)
+		{
+			oActiveTipStyle.top = (pageY + 12) + "px";
+		}
+		else //tool tip would be off the screen, move it up.
+		{
+			oActiveTipStyle.top = (pageY - heightOfBox) + "px";
+		}
+		oActiveTipStyle.visibility = "visible";
+		//window.status="oActiveTipStyle X:"+(oActiveTipStyle.left?oActiveTipStyle.left:"NAN")+", Y:"+(oActiveTipStyle.top?oActiveTipStyle.top:"NAN")+", x:"+x+", y:"+y +", windowW:"+windowWidth+", windowH:"+ windowHeight;
+	}
+
+	/***************************************
+	* This should be called from the object 
+	* wishing to show the tip.
+	***************************************/
+	function showTip(name)
+	{
+		if(oActiveTipStyle) 
+			unTip();
+		oActiveTip = document.getElementById(name);
+		oActiveTipStyle = document.getElementById(name).style;
+		if(oActiveTipStyle)
+		{
+			if (self.innerHeight) // all except Explorer
+			{
+				windowWidth = self.innerWidth;
+				windowHeight = self.innerHeight;
+			}
+			else if (document.documentElement && document.documentElement.clientHeight)	// Explorer 6 Strict Mode
+			{
+				windowWidth = document.documentElement.clientWidth;
+				windowHeight = document.documentElement.clientHeight;
+			}
+			else if (document.body) // other Explorers
+			{
+				windowWidth = document.body.clientWidth;
+				windowHeight = document.body.clientHeight;
+			}
+		}
+		showCustomToolTip();
+	}
+ 
+	/***************************************
+	* Hides the currently displaying it.
+	***************************************/
+	function unTip()
+	{
+		if(oActiveTipStyle) 
+			oActiveTipStyle.visibility = "hidden";
+
+		oActiveTipStyle = null;
+	}

@@ -1,0 +1,23 @@
+#legend {
+	font-family: Arial, sans-serif;
+	background: #fff;
+	padding: 10px;
+	margin: 10px;
+	border: 3px solid #666;
+}
+#legend h3 {
+	margin-top: 0;
+}
+#legend img {
+	vertical-align: middle;
+}
+#legend div {
+	padding: 4px 0;
+}
+#legend a {
+	font-size: 16px;
+	color: #666;
+}
+#legend a:hover {
+	color: #a39d6f;
+}

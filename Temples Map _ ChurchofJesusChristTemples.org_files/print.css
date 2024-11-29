@@ -1,0 +1,28 @@
+/* CSS Document */
+#Header, #Subheader, .sidebar, #Footer {
+	display: none !important;
+}
+body, ul.timeline_items, .icon_box a .desc, .icon_box a:hover .desc, .feature_list ul li a, .list_item a, .list_item a:hover, .widget_recent_entries ul li a, .flat_box a, .flat_box a:hover, .story_box .desc, .content_slider.carouselul li a .title, .content_slider.flat.description ul li .desc, .content_slider.flat.description ul li a .desc, .post-nav.minimal a i, .column_column ul, .column_column ol, .the_content_wrapper ul, .the_content_wrapper ol, .feature_box .feature_box_wrapper, h1, h2, h3, h4, h5, h6 {
+	color: #000 !important;
+}
+a, #temple-article a {
+	color: #000 !important;
+	text-decoration: none !important;
+}
+.with_aside .sections_group {
+    width: 100% !important;
+}
+.aside_left .sections_group {
+    float: none !important;
+}
+.with_aside .sections_group {
+    width: 100% !important;
+    float: none !important;
+}
+.aside_left .sections_group {
+    float: none !important;
+}
+.with_aside .sections_group {
+    width: 100% !important;
+    float: none !important;
+}
